@@ -50,7 +50,7 @@
          question_info
          (question_type, question_content, selects, correct_select, create_time, select_type, question_comment, question_resolve)
          values
-         (#{questionEntity.questionType}, #{questionEntity.questionContent}, #{questionEntity.selects},
-         #{questionEntity.correctSelect}, now(), #{questionEntity.selectType}, #{questionEntity.questionComment}, #{questionEntity.questionResolve});
+         (#{entity.questionType}, #{entity.questionContent}, #{entity.selects},
+         #{entity.correctSelect}, now(), #{entity.selectType}, #{entity.questionComment}, #{entity.questionResolve});
     </insert>
 </mapper>
