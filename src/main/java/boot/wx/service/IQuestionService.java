@@ -10,5 +10,9 @@ public interface IQuestionService {
 
     CommentResult<List<QuestionEntity>> findByTypeAndCollect(String questionType, String userId);
 
+    CommentResult<QuestionEntity> findAnswerById(Integer questionId);
+
     CommentResult<Integer> collect(Integer questionId, String userId);
+
+    CommentResult<Integer> add(QuestionEntity entity);
 }

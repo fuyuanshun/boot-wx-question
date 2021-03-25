@@ -19,6 +19,11 @@ public class QuestionService implements IQuestionService {
     private QuestionMapper mapper;
 
     @Override
+    public CommentResult<Integer> add(QuestionEntity entity) {
+        return mapper.add(entity);
+    }
+
+    @Override
     public CommentResult<List<QuestionEntity>> findQuestionByType(String questionType, String userId) {
         log.info("查询接口：  /question/findQuestionByType/{questionType} 被 " + userId + "调用");
         List<QuestionEntity> result = null;
@@ -28,6 +33,12 @@ public class QuestionService implements IQuestionService {
             e.printStackTrace();
             return new CommentResult<>(QuestionConstants.ERROR_CODE, QuestionConstants.ERROR_MESSAGE, null);
         }
+        result.forEach(e->{
+            if(e.getSelects() != null && !e.getSelects().toString().trim().equals("")){
+                String [] strings = e.getSelects().toString().split(";;;");
+                e.setSelects(strings);
+            }
+        });
         return new CommentResult<>(QuestionConstants.SUCCESS_CODE, QuestionConstants.SUCCESS_MESSAGE, result);
     }
 
@@ -37,6 +48,25 @@ public class QuestionService implements IQuestionService {
         List<QuestionEntity> result = null;
         try{
             result =  mapper.findByTypeAndCollect(questionType, userId);
+        } catch (Exception e){
+            e.printStackTrace();
+            return new CommentResult<>(QuestionConstants.ERROR_CODE, QuestionConstants.ERROR_MESSAGE, null);
+        }
+        result.forEach(e->{
+            if(e.getSelects() != null && !e.getSelects().toString().trim().equals("")){
+                String [] strings = e.getSelects().toString().split(";;;");
+                e.setSelects(strings);
+            }
+        });
+        return new CommentResult<>(QuestionConstants.SUCCESS_CODE, QuestionConstants.SUCCESS_MESSAGE, result);
+    }
+
+    @Override
+    public CommentResult<QuestionEntity> findAnswerById(Integer questionId) {
+        log.info("查询某个题目的答案和解析接口：  /question/findAnswerById/{question_id} 被调用");
+        QuestionEntity result = null;
+        try{
+            result =  mapper.findAnswerById(questionId);
         } catch (Exception e){
             e.printStackTrace();
             return new CommentResult<>(QuestionConstants.ERROR_CODE, QuestionConstants.ERROR_MESSAGE, null);

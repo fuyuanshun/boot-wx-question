@@ -20,16 +20,17 @@ create table question_info(
 	question_type int not null comment '所属的课程，课程类型表的外键',
 	question_content varchar(1000) not null default '' comment '题干',
 	selects varchar(500) not null default '' comment '选项',
-	correct_select varchar(20) not null default '' comment '正确选项',
-	select_type int not null default 0 comment '0表示单项选择，1表示多项选择',
+	correct_select varchar(20) not null default '' comment '正确选项/正确答案',
+	select_type int not null default 0 comment '0表示单项选择，1表示多项选择, 2表示简答题',
 	sorted int not null default 0 comment '排序顺序',
 	create_time datetime comment '题目创建时间',
 	question_comment varchar(200) not null default '' comment '题目备注',
+	question_resolve varchar(500) not null default '' comment  '题目解析',
 	deleted int not null default 0 comment '是否逻辑删除，0表示未删除，1表示已删除',
 	constraint fk_question_info_question_type foreign key(question_type)
 	references question_type(id)
 );
-insert into question_info (question_type, question_content, selects, correct_select, select_type) values (1, '选A', 'A:aaa;;;B:bbb;;;C:ccc;;;D:ddd', 'A', 0);
+insert into question_info (question_type, question_content, selects, correct_select, create_time, select_type, question_comment, question_resolve) values (1, '选A', 'A:aaa;;;B:bbb;;;C:ccc;;;D:ddd', 'A', now(), 0, '111', '因为所以科学道理');
 # select * from question_info
 # drop table question_info
 /**题库表 end*/
@@ -79,3 +80,8 @@ insert into reply_question_info (user_id, question_id, selected) values
 # select * from reply_question_info
 # drop table reply_question_info
 /**答题记录表 end*/
+
+
+
+
+

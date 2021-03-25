@@ -5,9 +5,7 @@ import boot.wx.entity.QuestionEntity;
 import boot.wx.service.IQuestionService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -17,6 +15,16 @@ public class QuestionController {
 
     @Autowired
     private IQuestionService service;
+
+
+    /**
+     *  添加某个课程下的题目 测试用
+     *
+     */
+    @PostMapping("/question/add")
+    public CommentResult<Integer> add(@RequestBody QuestionEntity questionEntity){
+        return service.add(questionEntity);
+    }
 
     /**
      *  获取某个课程下的所有的题目
@@ -39,12 +47,21 @@ public class QuestionController {
     }
 
     /**
+     *  获取某个题目的正确答案和解析
+     *
+     */
+    @GetMapping("/question/findAnswerById/{question_id}")
+    public CommentResult<QuestionEntity> findAnswerById(@PathVariable("question_id") Integer questionId){
+        return service.findAnswerById(questionId);
+    }
+
+    /**
      *  收藏某个题目
      *
      * @param userId 用户id
      * @param questionId 题目id
      */
-    @GetMapping("/question/collect/{question_id}/{user_id}")
+    @PostMapping("/question/collect/{question_id}/{user_id}")
     public CommentResult<Integer> collect(@PathVariable("question_id") Integer questionId,
                                           @PathVariable("user_id") String userId){
         return service.collect(questionId, userId);
