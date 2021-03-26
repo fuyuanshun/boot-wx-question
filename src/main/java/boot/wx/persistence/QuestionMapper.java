@@ -22,5 +22,5 @@ public interface QuestionMapper {
 
     int findCollectStatus(@Param("userId") String userId, @Param("questionId") Integer questionId);
 
-    CommentResult<Integer> add(@RequestParam("questionEntity") QuestionEntity questionEntity);
+    int add(@Param("entity") QuestionEntity entity);
 }

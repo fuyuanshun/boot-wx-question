@@ -20,7 +20,7 @@ public class QuestionService implements IQuestionService {
 
     @Override
     public CommentResult<Integer> add(QuestionEntity entity) {
-        return mapper.add(entity);
+        return new CommentResult<>(QuestionConstants.SUCCESS_CODE, QuestionConstants.SUCCESS_MESSAGE, mapper.add(entity));
     }
 
     @Override
