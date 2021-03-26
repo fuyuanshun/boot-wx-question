@@ -3,6 +3,7 @@ package boot.wx.controller;
 import boot.wx.entity.CommentResult;
 import boot.wx.entity.QuestionEntity;
 import boot.wx.service.IQuestionService;
+import com.alibaba.fastjson.JSONObject;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -65,5 +66,37 @@ public class QuestionController {
     public CommentResult<Integer> collect(@PathVariable("question_id") Integer questionId,
                                           @PathVariable("user_id") String userId){
         return service.collect(questionId, userId);
+    }
+
+    /**
+     * 提交答题卡
+     *
+     * @return
+     */
+    @PostMapping("/question/commit/{user_id}")
+    public CommentResult<JSONObject> commitQuestionCard(@PathVariable("user_id") String userId,
+                                                        @RequestBody List<QuestionEntity> list){
+        return service.commitQuestionCard(userId, list);
+    }
+
+    /**
+     * 查询错题记录
+     *
+     * @return
+     */
+    @PostMapping("/question/wrong/{user_id}")
+    public CommentResult<List<QuestionEntity>> wrongList(@PathVariable("user_id") String userId){
+        return service.wrongList(userId);
+    }
+
+    /**
+     * 删除某个错题记录, 支持删除多个，多个id之间使用半角','分割
+     *
+     * @return
+     */
+    @PostMapping("/question/removeWrong/{question_ids}/{user_id}")
+    public CommentResult<Integer> removeWrongQuestion(@PathVariable("question_ids") String questionIds,
+                                                      @PathVariable("user_id") String userId){
+        return service.removeWrongQuestion(questionIds, userId);
     }
 }
