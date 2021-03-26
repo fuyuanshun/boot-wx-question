@@ -79,6 +79,7 @@ public class QuestionService implements IQuestionService {
             List<QuestionEntity> answerById = mapper.findAnswerById(questionId.toString(), null);
             if(answerById.size() != 0){
                 result = answerById.get(0);
+                result.setSelects(result.getSelects().toString().split(";;;"));
             }
         } catch (Exception e){
             e.printStackTrace();
@@ -183,6 +184,12 @@ public class QuestionService implements IQuestionService {
             e.printStackTrace();
             return new CommentResult<>(QuestionConstants.ERROR_CODE, QuestionConstants.ERROR_MESSAGE, null);
         }
+        result.forEach(e->{
+            if(e.getSelects() != null && !e.getSelects().toString().trim().equals("")){
+                String [] strings = e.getSelects().toString().split(";;;");
+                e.setSelects(strings);
+            }
+        });
         return new CommentResult<>(QuestionConstants.SUCCESS_CODE, QuestionConstants.SUCCESS_MESSAGE, result);
     }
 

@@ -84,7 +84,7 @@ public class QuestionController {
      *
      * @return
      */
-    @PostMapping("/question/wrong/{user_id}")
+    @GetMapping("/question/wrong/{user_id}")
     public CommentResult<List<QuestionEntity>> wrongList(@PathVariable("user_id") String userId){
         return service.wrongList(userId);
     }
