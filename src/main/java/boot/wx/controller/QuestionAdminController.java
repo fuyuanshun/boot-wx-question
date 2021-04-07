@@ -70,4 +70,42 @@ public class QuestionAdminController {
     public CommentResult<Integer> updateById(@RequestBody QuestionEntity entity){
         return service.updateById(entity);
     }
+
+    /**
+     * 查询所有的课程类型
+     * @return
+     */
+    @GetMapping("/admin/question/findAllQuestionTypes")
+    public CommentResult<List<QuestionEntity>> findAllQuestionTypes(){
+        return null;
+    }
+
+    /**
+     * 添加一个课程类型
+     * @return
+     */
+    @PostMapping("/admin/question/addQuestionType")
+    public CommentResult<QuestionEntity> addQuestionType(){
+        return null;
+    }
+
+    /**
+     * 根据id删除一个课程类型
+     * @param id
+     * @return
+     */
+    @PostMapping("/admin/question/deleteQuestionType/{id}")
+    public CommentResult<QuestionEntity> deleteQuestionType(@PathVariable("id") Integer id){
+        return null;
+    }
+
+    /**
+     * 根据id删除一个课程类型
+     * @return
+     */
+    @PostMapping("/admin/question/updateQuestionType")
+    public CommentResult<QuestionEntity> updateQuestionType(@RequestParam("id") Integer id,
+                                                            @RequestParam("name") String name){
+        return null;
+    }
 }
