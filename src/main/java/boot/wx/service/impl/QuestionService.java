@@ -5,6 +5,7 @@ import boot.wx.entity.CommentResult;
 import boot.wx.entity.QuestionEntity;
 import boot.wx.persistence.QuestionMapper;
 import boot.wx.service.IQuestionService;
+import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang.StringUtils;
@@ -12,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 
 @Slf4j
@@ -20,18 +22,6 @@ public class QuestionService implements IQuestionService {
 
     @Autowired
     private QuestionMapper mapper;
-
-    @Override
-    public CommentResult<Integer> add(QuestionEntity entity) {
-        int i = 0;
-        try{
-            i = mapper.add(entity);
-        } catch (Exception e){
-            e.printStackTrace();
-            return new CommentResult<>(QuestionConstants.ERROR_CODE, QuestionConstants.ERROR_MESSAGE, 0);
-        }
-        return new CommentResult<>(QuestionConstants.SUCCESS_CODE, QuestionConstants.SUCCESS_MESSAGE, i);
-    }
 
     @Override
     public CommentResult<List<QuestionEntity>> findQuestionByType(String questionType, String userId) {
@@ -43,10 +33,13 @@ public class QuestionService implements IQuestionService {
             e.printStackTrace();
             return new CommentResult<>(QuestionConstants.ERROR_CODE, QuestionConstants.ERROR_MESSAGE, null);
         }
+        AtomicInteger i = new AtomicInteger(1);
         result.forEach(e->{
+            e.setNum(i.getAndIncrement());
             if(e.getSelects() != null && !e.getSelects().toString().trim().equals("")){
                 String [] strings = e.getSelects().toString().split(";;;");
                 e.setSelects(strings);
+                addColumn(e, strings);
             }
         });
         return new CommentResult<>(QuestionConstants.SUCCESS_CODE, QuestionConstants.SUCCESS_MESSAGE, result);
@@ -62,10 +55,13 @@ public class QuestionService implements IQuestionService {
             e.printStackTrace();
             return new CommentResult<>(QuestionConstants.ERROR_CODE, QuestionConstants.ERROR_MESSAGE, null);
         }
+        AtomicInteger i = new AtomicInteger(1);
         result.forEach(e->{
+            e.setNum(i.getAndIncrement());
             if(e.getSelects() != null && !e.getSelects().toString().trim().equals("")){
                 String [] strings = e.getSelects().toString().split(";;;");
                 e.setSelects(strings);
+                addColumn(e, strings);
             }
         });
         return new CommentResult<>(QuestionConstants.SUCCESS_CODE, QuestionConstants.SUCCESS_MESSAGE, result);
@@ -122,7 +118,7 @@ public class QuestionService implements IQuestionService {
             answerById.forEach(e->{
                 if(map.containsKey(e.getId())){
                     String s = map.get(e.getId()); //提交的选项
-                    if(("单项选择题".equals(e.getSelectType()) || "多项选择题".equals(e.getSelectType()))){ //如果是单项或者多项选择的话，提交的选项和答案一致，说明答对了，如果不是单项或者多项选择，说明是简答题，只要不为空，就算答对
+                    if((0 == e.getSelectType() || 1 == e.getSelectType())){ //如果是单项或者多项选择的话，提交的选项和答案一致，说明答对了，如果不是单项或者多项选择，说明是简答题，只要不为空，就算答对
                         e.setCommitSelect(s == null || "".equals(s) ? "未填写" : s); //
 
                         if(!"".equals(s) && e.getCorrectSelect().equals(s)){
@@ -133,7 +129,7 @@ public class QuestionService implements IQuestionService {
                             e.setStatus(0);
                             finalWrongQuestion.add(e);
                         }
-                    } else if("简答题".equals(e.getSelectType())){
+                    } else if(2 == e.getSelectType()){
                         e.setCommitSelect(s == null || "".equals(s) ? "未填写" : s); //
 
                         /*if(s != null && !"".equals(s)){
@@ -184,10 +180,13 @@ public class QuestionService implements IQuestionService {
             e.printStackTrace();
             return new CommentResult<>(QuestionConstants.ERROR_CODE, QuestionConstants.ERROR_MESSAGE, null);
         }
+        AtomicInteger i = new AtomicInteger(1);
         result.forEach(e->{
+            e.setNum(i.getAndIncrement());
             if(e.getSelects() != null && !e.getSelects().toString().trim().equals("")){
                 String [] strings = e.getSelects().toString().split(";;;");
                 e.setSelects(strings);
+                addColumn(e, strings);
             }
         });
         return new CommentResult<>(QuestionConstants.SUCCESS_CODE, QuestionConstants.SUCCESS_MESSAGE, result);
@@ -207,5 +206,33 @@ public class QuestionService implements IQuestionService {
             }
         }
         return new CommentResult<>(QuestionConstants.SUCCESS_CODE, QuestionConstants.SUCCESS_MESSAGE, count);
+    }
+
+    private void addColumn(QuestionEntity e, String[] strings){
+        JSONArray jsonArray = new JSONArray();
+        for(int i = 0; i<strings.length; i++){
+            JSONObject jsonObject = new JSONObject();
+            switch (i){
+                case 0:
+                    jsonObject.put("name", "one");
+                    jsonObject.put("value", "A");
+                    break;
+                case 1:
+                    jsonObject.put("name", "two");
+                    jsonObject.put("value", "B");
+                    break;
+                case 2:
+                    jsonObject.put("name", "three");
+                    jsonObject.put("value", "C");
+                    break;
+                case 3:
+                    jsonObject.put("name", "four");
+                    jsonObject.put("value", "D");
+                    break;
+            }
+            jsonObject.put("text", strings[i]);
+            jsonArray.add(jsonObject);
+        }
+        e.setAswItem(jsonArray);
     }
 }

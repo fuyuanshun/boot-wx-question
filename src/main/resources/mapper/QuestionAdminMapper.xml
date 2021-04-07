@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="boot.wx.persistence.QuestionAdminMapper">
+    <!-- 添加题目 -->
+    <insert id="add" parameterType="QuestionEntity">
+        insert into
+         question_info
+         (question_type, question_content, selects, correct_select, create_time, select_type, question_comment, question_resolve)
+         values
+         (#{entity.questionType}, #{entity.questionContent}, #{entity.selects},
+         #{entity.correctSelect}, now(), #{entity.selectType}, #{entity.questionComment}, #{entity.questionResolve});
+    </insert>
+</mapper>

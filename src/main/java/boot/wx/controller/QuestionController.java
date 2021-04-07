@@ -17,16 +17,6 @@ public class QuestionController {
     @Autowired
     private IQuestionService service;
 
-
-    /**
-     *  添加某个课程下的题目 测试用
-     *
-     */
-    @PostMapping("/question/add")
-    public CommentResult<Integer> add(@RequestBody QuestionEntity questionEntity){
-        return service.add(questionEntity);
-    }
-
     /**
      *  获取某个课程下的所有的题目
      * {questionType}表示课程的类型

@@ -15,8 +15,6 @@ public interface IQuestionService {
 
     CommentResult<Integer> collect(Integer questionId, String userId);
 
-    CommentResult<Integer> add(QuestionEntity entity);
-
     CommentResult<JSONObject> commitQuestionCard(String userId, List<QuestionEntity> list);
 
     CommentResult<List<QuestionEntity>> wrongList(String userId);

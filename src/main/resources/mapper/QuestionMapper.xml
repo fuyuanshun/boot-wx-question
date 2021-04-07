@@ -4,9 +4,10 @@
     <!-- 获取某个课程下所有的题目 -->
     <select id="findQuestionByType" parameterType="String" resultType="QuestionEntity">
         select t1.id, t2.name questionType, t1.question_content questionContent, t1.selects,
-        case t1.select_type when 0 then '单项选择题' when 1 then '多项选择题' when 2 then '简答题' end selectType,
+        <!--case t1.select_type when 0 then '单项选择题' when 1 then '多项选择题' when 2 then '简答题' end selectType,-->
+        t1.select_type selectType,
         t1.sorted, t1.create_time createTime, t1.question_comment questionComment,
-        (case when t3.id is null then 0 else 1 end) collectStatus
+        (case when t3.id is null then 'false' else 'true' end) collectStatus
         from question_info t1
         left join question_type t2 on t1.question_type = t2.id
         left join question_collected t3 on t1.id = t3.question_id and t3.user_id = #{userId}
@@ -16,32 +17,34 @@
     <!-- 获取某个课程下所有已经收藏的题目 -->
     <select id="findByTypeAndCollect" resultType="QuestionEntity">
         select t2.id, t3.name questionType, t2.question_content questionContent, t2.selects,
-        case t2.select_type when 0 then '单项选择题' when 1 then '多项选择题' when 2 then '简答题' end selectType,
-        t2.sorted, t2.create_time createTime, t2.question_comment questionComment,
-        1 collectStatus
-        from question_collected t1
-        left join question_info t2 on t1.question_id = t2.id
-        left join question_type t3 on t2.question_type = t3.id
-        where t1.user_id = #{userId}
-    </select>
+    <!--case t2.select_type when 0 then '单项选择题' when 1 then '多项选择题' when 2 then '简答题' end selectType,-->
+            t2.select_type selectType,
+            t2.sorted, t2.create_time createTime, t2.question_comment questionComment,
+            1 collectStatus
+            from question_collected t1
+            left join question_info t2 on t1.question_id = t2.id
+            left join question_type t3 on t2.question_type = t3.id
+            where t1.user_id = #{userId}
+        </select>
 
-    <!-- 根据题目id查到题目的答案和解析 -->
+        <!-- 根据题目id查到题目的答案和解析 -->
     <select id="findAnswerById" resultType="QuestionEntity">
         select t1.id, t1.question_resolve questionResolve, t1.correct_select correctSelect,
         t2.name questionType, t1.question_content questionContent, t1.selects,
         t1.sorted, t1.create_time createTime, t1.question_comment questionComment,
-        (case  when t3.id is null then 0 else 1 end) collectStatus,
-        case select_type when 0 then '单项选择题' when 1 then '多项选择题' when 2 then '简答题' end selectType
-        from question_info t1
-        left join question_type t2 on t1.question_type = t2.id
-        left join question_collected t3 on t1.id = t3.question_id
-        <if test="userId != null and userId != ''">
-            and t3.user_id = #{userId}
-        </if>
-        where t1.id in (${questionId})
-    </select>
+        (case  when t3.id is null then 'false' else 'true' end) collectStatus,
+    <!--case select_type when 0 then '单项选择题' when 1 then '多项选择题' when 2 then '简答题' end selectType-->
+            select_type selectType
+            from question_info t1
+            left join question_type t2 on t1.question_type = t2.id
+            left join question_collected t3 on t1.id = t3.question_id
+            <if test="userId != null and userId != ''">
+                and t3.user_id = #{userId}
+            </if>
+            where t1.id in (${questionId})
+        </select>
 
-    <!-- 收藏 或 取消收藏 -->
+        <!-- 收藏 或 取消收藏 -->
     <select id="collect">
         <if test="option == 'delete'">
             delete from question_collected where user_id = #{userId} and question_id = #{questionId}
@@ -54,16 +57,6 @@
     <select id="findCollectStatus" resultType="Integer">
         select count(id) from question_collected where user_id = #{userId} and question_id = #{questionId}
     </select>
-
-    <!-- 添加题目 -->
-    <insert id="add" parameterType="QuestionEntity">
-        insert into
-         question_info
-         (question_type, question_content, selects, correct_select, create_time, select_type, question_comment, question_resolve)
-         values
-         (#{entity.questionType}, #{entity.questionContent}, #{entity.selects},
-         #{entity.correctSelect}, now(), #{entity.selectType}, #{entity.questionComment}, #{entity.questionResolve});
-    </insert>
 
     <!-- 查询所有的错题id，用于比较答错的题，从而过滤掉已经存在于错题表的题目，避免重复添加 -->
     <select id="findWrongQuestionList" resultType="Integer">
@@ -88,10 +81,11 @@
     <select id="wrongList" resultType="QuestionEntity">
         select t1.user_id userId, t1.create_time wrongTime, t1.wrong_selected wrongSelect,
         t2.id, t3.name questionType, t2.question_content questionContent, t2.selects,
-        case t2.select_type when 0 then '单项选择题' when 1 then '多项选择题' when 2 then '简答题' end selectType,
+<!--case t2.select_type when 0 then '单项选择题' when 1 then '多项选择题' when 2 then '简答题' end selectType,-->
+        t2.select_type selectType,
         t2.sorted, t2.create_time createTime, t2.question_comment questionComment, t2.question_resolve questionResolve,
         t2.correct_select correctSelect,
-        (case  when t3.id is null then 0 else 1 end) collectStatus
+        (case  when t3.id is null then 'false' else 'true' end) collectStatus
         from wrong_question_info t1
         left join question_info t2 on t1.question_id = t2.id
         left join question_type t3 on t2.question_type = t3.id
