@@ -8,6 +8,49 @@
          (question_type, question_content, selects, correct_select, create_time, select_type, question_comment, question_resolve)
          values
          (#{entity.questionType}, #{entity.questionContent}, #{entity.selects},
-         #{entity.correctSelect}, now(), #{entity.selectType}, #{entity.questionComment}, #{entity.questionResolve});
+         #{entity.correctSelect}, now(), #{entity.selectType}, #{entity.questionComment}, #{entity.questionResolve})
     </insert>
+
+    <select id="findAllQuestions" resultType="boot.wx.entity.QuestionEntity">
+        select t1.id, t2.name questionType, t1.question_content questionContent, t1.selects,
+        t1.select_type selectType,
+        t1.sorted, t1.create_time createTime, t1.question_comment questionComment,
+        (case when t3.id is null then 'false' else 'true' end) collectStatus
+        from question_info t1
+        left join question_type t2 on t1.question_type = t2.id
+        left join question_collected t3 on t1.id = t3.question_id
+        where t1.deleted = 0
+    </select>
+
+    <update id="deleteById">
+        update question_info set deleted = 1 where id = #{id}
+    </update>
+
+    <update id="updateById" parameterType="boot.wx.entity.QuestionEntity">
+         update question_info
+         <set>
+              <if test="entity.questionType != null and entity.questionType != ''">
+                  question_type = #{entity.questionType},
+              </if>
+             <if test="entity.questionContent != null and entity.questionContent != ''">
+                 question_content = #{entity.questionContent},
+             </if>
+             <if test="entity.selects != null and entity.selects != ''">
+                 selects = #{entity.selects},
+             </if>
+             <if test="entity.correctSelect != null and entity.correctSelect != ''">
+                 correct_select = #{entity.correctSelect},
+             </if>
+             <if test="entity.selectType != null and entity.selectType != ''">
+                 select_type = #{entity.selectType},
+             </if>
+             <if test="entity.questionComment != null and entity.questionComment != ''">
+                 question_comment = #{entity.questionComment},
+             </if>
+             <if test="entity.questionResolve != null and entity.questionResolve != ''">
+                 question_resolve = #{entity.questionResolve},
+             </if>
+         </set>
+         where id = #{entity.id}
+    </update>
 </mapper>

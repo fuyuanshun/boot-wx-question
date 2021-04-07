@@ -6,12 +6,10 @@ import boot.wx.entity.User;
 import boot.wx.service.IQuestionAdminService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
+import java.util.List;
 
 @RestController
 @Slf4j
@@ -30,11 +28,46 @@ public class QuestionAdminController {
     }
 
     /**
+     *  退出登录
+     */
+    @PostMapping("/admin/logout")
+    public CommentResult<String> logout(@RequestParam("username") String username, HttpSession session){
+        return service.logout(username, session);
+    }
+
+    /**
      *  添加某个课程下的题目 测试用
      *
      */
     @PostMapping("/admin/question/add")
     public CommentResult<Integer> add(@RequestBody QuestionEntity questionEntity){
         return service.add(questionEntity);
+    }
+
+    /**
+     *  获取所有的题目
+     *  不分类型. 所有的题目
+     */
+    @GetMapping("/admin/question/findAllQuestions")
+    public CommentResult<List<QuestionEntity>> findAllQuestions(){
+        return service.findAllQuestions();
+    }
+
+    /**
+     *  根据id删除某个题目
+     *
+     */
+    @PostMapping("/admin/question/deleteById/{id}")
+    public CommentResult<Integer> deleteById(@PathVariable("id") Integer id){
+        return service.deleteById(id);
+    }
+
+    /**
+     *  根据id更新某个题目
+     *  id为必要参数， 其他参数需要又一个不为空
+     */
+    @PostMapping("/admin/question/updateById")
+    public CommentResult<Integer> updateById(@RequestBody QuestionEntity entity){
+        return service.updateById(entity);
     }
 }
