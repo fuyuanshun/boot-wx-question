@@ -82,6 +82,6 @@ insert into reply_question_info (user_id, question_id, selected) values
 /**答题记录表 end*/
 
 
-
+alter table wrong_question_info add create_time datetime;
 
 
