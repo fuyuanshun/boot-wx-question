@@ -2,7 +2,7 @@ package boot.wx.controller;
 
 import boot.wx.entity.CommentResult;
 import boot.wx.entity.QuestionEntity;
-import boot.wx.entity.User;
+import boot.wx.entity.QuestionTypeEntity;
 import boot.wx.service.IQuestionAdminService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -76,8 +76,8 @@ public class QuestionAdminController {
      * @return
      */
     @GetMapping("/admin/question/findAllQuestionTypes")
-    public CommentResult<List<QuestionEntity>> findAllQuestionTypes(){
-        return null;
+    public CommentResult<List<QuestionTypeEntity>> findAllQuestionTypes(){
+        return service.findAllQuestionTypes();
     }
 
     /**
@@ -85,8 +85,8 @@ public class QuestionAdminController {
      * @return
      */
     @PostMapping("/admin/question/addQuestionType")
-    public CommentResult<QuestionEntity> addQuestionType(){
-        return null;
+    public CommentResult<Integer> addQuestionType(@RequestParam("name") String name){
+        return service.addQuestionType(name);
     }
 
     /**
@@ -95,17 +95,45 @@ public class QuestionAdminController {
      * @return
      */
     @PostMapping("/admin/question/deleteQuestionType/{id}")
-    public CommentResult<QuestionEntity> deleteQuestionType(@PathVariable("id") Integer id){
-        return null;
+    public CommentResult<Integer> deleteQuestionType(@PathVariable("id") Integer id){
+        return service.deleteQuestionType(id);
     }
 
     /**
-     * 根据id删除一个课程类型
+     * 根据id更新一个课程类型的名称
      * @return
      */
     @PostMapping("/admin/question/updateQuestionType")
-    public CommentResult<QuestionEntity> updateQuestionType(@RequestParam("id") Integer id,
+    public CommentResult<Integer> updateQuestionType(@RequestParam("id") Integer id,
                                                             @RequestParam("name") String name){
-        return null;
+        return service.updateQuestionType(id, name);
+    }
+
+    /**
+     * 添加一个课程类型下的文件夹
+     * @return
+     */
+    @PostMapping("/admin/question/addQuestionFile")
+    public CommentResult<Integer> addQuestionFile(@RequestParam("name") String name, @RequestParam("questionType") String questionType){
+        return service.addQuestionFile(name, questionType);
+    }
+
+    /**
+     * 根据id更新一个课程类型下的文件夹的名称
+     * @return
+     */
+    @PostMapping("/admin/question/updateQuestionFile")
+    public CommentResult<Integer> updateQuestionFile(@RequestParam("id") Integer id,
+                                                     @RequestParam("name") String name){
+        return service.updateQuestionFile(id, name);
+    }
+
+    /**
+     * 根据id删除一个课程类型下的文件夹
+     * @return
+     */
+    @PostMapping("/admin/question/deleteQuestionFile/{id}")
+    public CommentResult<Integer> deleteQuestionFile(@PathVariable("id") Integer id){
+        return service.deleteQuestionFile(id);
     }
 }

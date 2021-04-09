@@ -84,4 +84,14 @@ insert into reply_question_info (user_id, question_id, selected) values
 
 alter table wrong_question_info add create_time datetime;
 
-
+/**文件夹表 start*/
+create table question_file(
+	id int primary key auto_increment,
+	name varchar(50) not null default '' comment '文件夹名称',
+	question_type_id int comment '课程类型外键',
+	create_time datetime,
+	deleted int default 0,
+	constraint fk_question_file_question_type foreign key(question_type_id) references question_type(id)
+);
+insert into question_file (name, question_type_id, deleted) values('test1', 1, 0);
+/**文件夹表 end*/

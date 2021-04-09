@@ -3,6 +3,7 @@ package boot.wx.service.impl;
 import boot.wx.constants.QuestionConstants;
 import boot.wx.entity.CommentResult;
 import boot.wx.entity.QuestionEntity;
+import boot.wx.entity.QuestionTypeEntity;
 import boot.wx.entity.User;
 import boot.wx.persistence.QuestionAdminMapper;
 import boot.wx.service.IQuestionAdminService;
@@ -96,6 +97,90 @@ public class QuestionAdminService implements IQuestionAdminService {
         int i = 0;
         try{
             i = mapper.updateById(entity);
+        } catch (Exception e){
+            e.printStackTrace();
+            return new CommentResult<>(QuestionConstants.ERROR_CODE, QuestionConstants.ERROR_MESSAGE, 0);
+        }
+        return new CommentResult<>(QuestionConstants.SUCCESS_CODE, QuestionConstants.SUCCESS_MESSAGE, i);
+    }
+
+    @Override
+    public CommentResult<List<QuestionTypeEntity>> findAllQuestionTypes() {
+        List<QuestionTypeEntity> result = null;
+        try{
+            result = mapper.findAllQuestionTypes();
+        } catch (Exception e){
+            e.printStackTrace();
+            return new CommentResult<>(QuestionConstants.ERROR_CODE, QuestionConstants.ERROR_MESSAGE, null);
+        }
+        return new CommentResult<>(QuestionConstants.SUCCESS_CODE, QuestionConstants.SUCCESS_MESSAGE, result);
+    }
+
+    @Override
+    public CommentResult<Integer> addQuestionType(String name) {
+        int i = 0;
+        try{
+            i = mapper.addQuestionType(name);
+        } catch (Exception e){
+            e.printStackTrace();
+            return new CommentResult<>(QuestionConstants.ERROR_CODE, QuestionConstants.ERROR_MESSAGE, 0);
+        }
+        return new CommentResult<>(QuestionConstants.SUCCESS_CODE, QuestionConstants.SUCCESS_MESSAGE, i);
+    }
+
+    @Override
+    public CommentResult<Integer> deleteQuestionType(Integer id) {
+        int i = 0;
+        try{
+            i = mapper.deleteQuestionType(id);
+        } catch (Exception e){
+            e.printStackTrace();
+            return new CommentResult<>(QuestionConstants.ERROR_CODE, QuestionConstants.ERROR_MESSAGE, 0);
+        }
+        return new CommentResult<>(QuestionConstants.SUCCESS_CODE, QuestionConstants.SUCCESS_MESSAGE, i);
+    }
+
+    @Override
+    public CommentResult<Integer> updateQuestionType(Integer id, String name) {
+        int i = 0;
+        try{
+            i = mapper.updateQuestionType(id, name);
+        } catch (Exception e){
+            e.printStackTrace();
+            return new CommentResult<>(QuestionConstants.ERROR_CODE, QuestionConstants.ERROR_MESSAGE, 0);
+        }
+        return new CommentResult<>(QuestionConstants.SUCCESS_CODE, QuestionConstants.SUCCESS_MESSAGE, i);
+    }
+
+    @Override
+    public CommentResult<Integer> addQuestionFile(String name, String questionType) {
+        int i = 0;
+        try{
+            i = mapper.addQuestionFile(name, questionType);
+        } catch (Exception e){
+            e.printStackTrace();
+            return new CommentResult<>(QuestionConstants.ERROR_CODE, QuestionConstants.ERROR_MESSAGE, 0);
+        }
+        return new CommentResult<>(QuestionConstants.SUCCESS_CODE, QuestionConstants.SUCCESS_MESSAGE, i);
+    }
+
+    @Override
+    public CommentResult<Integer> updateQuestionFile(Integer id, String name) {
+        int i = 0;
+        try{
+            i = mapper.updateQuestionFile(id, name);
+        } catch (Exception e){
+            e.printStackTrace();
+            return new CommentResult<>(QuestionConstants.ERROR_CODE, QuestionConstants.ERROR_MESSAGE, 0);
+        }
+        return new CommentResult<>(QuestionConstants.SUCCESS_CODE, QuestionConstants.SUCCESS_MESSAGE, i);
+    }
+
+    @Override
+    public CommentResult<Integer> deleteQuestionFile(Integer id) {
+        int i = 0;
+        try{
+            i = mapper.deleteQuestionFile(id);
         } catch (Exception e){
             e.printStackTrace();
             return new CommentResult<>(QuestionConstants.ERROR_CODE, QuestionConstants.ERROR_MESSAGE, 0);

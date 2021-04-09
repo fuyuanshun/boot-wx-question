@@ -3,6 +3,7 @@ package boot.wx.service.impl;
 import boot.wx.constants.QuestionConstants;
 import boot.wx.entity.CommentResult;
 import boot.wx.entity.QuestionEntity;
+import boot.wx.entity.QuestionFiles;
 import boot.wx.persistence.QuestionMapper;
 import boot.wx.service.IQuestionService;
 import com.alibaba.fastjson.JSONArray;
@@ -206,6 +207,18 @@ public class QuestionService implements IQuestionService {
             }
         }
         return new CommentResult<>(QuestionConstants.SUCCESS_CODE, QuestionConstants.SUCCESS_MESSAGE, count);
+    }
+
+    @Override
+    public CommentResult<List<QuestionFiles>> files(String questionType, String userId) {
+        List<QuestionFiles> result = null;
+        try{
+            result = mapper.files(questionType, userId);
+        } catch (Exception e){
+            e.printStackTrace();
+            return new CommentResult<>(QuestionConstants.ERROR_CODE, QuestionConstants.ERROR_MESSAGE, null);
+        }
+        return new CommentResult<>(QuestionConstants.SUCCESS_CODE, QuestionConstants.SUCCESS_MESSAGE, result);
     }
 
     private void addColumn(QuestionEntity e, String[] strings){

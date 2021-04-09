@@ -1,6 +1,7 @@
 package boot.wx.persistence;
 
 import boot.wx.entity.QuestionEntity;
+import boot.wx.entity.QuestionFiles;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Component;
@@ -27,4 +28,6 @@ public interface QuestionMapper {
     List<QuestionEntity> wrongList(@Param("userId") String userId);
 
     int removeWrongQuestion(@Param("questionIds") String questionIds, @Param("userId") String userId);
+
+    List<QuestionFiles> files(@Param("questionType") String questionType, @Param("userId") String userId);
 }

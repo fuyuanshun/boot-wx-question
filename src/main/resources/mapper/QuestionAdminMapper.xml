@@ -53,4 +53,32 @@
          </set>
          where id = #{entity.id}
     </update>
+
+    <select id="findAllQuestionTypes" resultType="boot.wx.entity.QuestionTypeEntity">
+        select id, name questiontype from question_type where deleted = 0
+    </select>
+
+    <insert id="addQuestionType" parameterType="String">
+        insert into question_type (name, create_time, deleted) values (#{name}, now(), 0)
+    </insert>
+
+    <update id="deleteQuestionType" parameterType="Integer">
+        update question_type set deleted = 1 where id = #{id}
+    </update>
+
+    <update id="updateQuestionType">
+        update question_type set name = #{name} where id = #{id} and deleted = 0
+    </update>
+
+    <insert id="addQuestionFile">
+        insert into question_file (name, question_type_id, create_time, deleted) values (#{name}, #{questionType}, now(), 0)
+    </insert>
+
+    <update id="updateQuestionFile">
+        update question_file set name = #{name} where id = #{id} and deleted = 0
+    </update>
+
+    <update id="deleteQuestionFile" parameterType="Integer">
+        update question_file set deleted = 1 where id = #{id}
+    </update>
 </mapper>

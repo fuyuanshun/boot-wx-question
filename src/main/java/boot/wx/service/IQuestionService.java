@@ -2,6 +2,7 @@ package boot.wx.service;
 
 import boot.wx.entity.CommentResult;
 import boot.wx.entity.QuestionEntity;
+import boot.wx.entity.QuestionFiles;
 import com.alibaba.fastjson.JSONObject;
 
 import java.util.List;
@@ -20,4 +21,6 @@ public interface IQuestionService {
     CommentResult<List<QuestionEntity>> wrongList(String userId);
 
     CommentResult<Integer> removeWrongQuestion(String questionIds, String userId);
+
+    CommentResult<List<QuestionFiles>> files(String questionType, String userId);
 }

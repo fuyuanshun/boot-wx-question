@@ -2,6 +2,7 @@ package boot.wx.controller;
 
 import boot.wx.entity.CommentResult;
 import boot.wx.entity.QuestionEntity;
+import boot.wx.entity.QuestionFiles;
 import boot.wx.service.IQuestionService;
 import com.alibaba.fastjson.JSONObject;
 import lombok.extern.slf4j.Slf4j;
@@ -88,5 +89,10 @@ public class QuestionController {
     public CommentResult<Integer> removeWrongQuestion(@PathVariable("question_ids") String questionIds,
                                                       @PathVariable("user_id") String userId){
         return service.removeWrongQuestion(questionIds, userId);
+    }
+
+    @GetMapping("/question/files/{questionType}/{user_id}")
+    public CommentResult<List<QuestionFiles>> files(@PathVariable("questionType") String questionType, @PathVariable("user_id") String userId){
+        return service.files(questionType, userId);
     }
 }
