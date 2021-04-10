@@ -105,4 +105,15 @@ create table course(
 	c_img varchar(999) default '',
 	deleted int default 0,
 	constraint fk_course_question_type foreign key(question_type) references question_type(id)
-)
+);
+
+create table guide(
+	id int primary key auto_increment,
+	question_type int,
+	c_title varchar(200) default '',
+	c_slogan varchar(200) default '',
+	content varchar(500) default '',
+	c_img varchar(999) default '',
+	deleted int default 0,
+	constraint fk_guide_question_type foreign key(question_type) references question_type(id)
+);
