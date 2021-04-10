@@ -1,9 +1,7 @@
 package boot.wx.service.impl;
 
 import boot.wx.constants.QuestionConstants;
-import boot.wx.entity.CommentResult;
-import boot.wx.entity.QuestionEntity;
-import boot.wx.entity.QuestionFiles;
+import boot.wx.entity.*;
 import boot.wx.persistence.QuestionMapper;
 import boot.wx.service.IQuestionService;
 import com.alibaba.fastjson.JSONArray;
@@ -13,6 +11,7 @@ import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
@@ -219,6 +218,79 @@ public class QuestionService implements IQuestionService {
             return new CommentResult<>(QuestionConstants.ERROR_CODE, QuestionConstants.ERROR_MESSAGE, null);
         }
         return new CommentResult<>(QuestionConstants.SUCCESS_CODE, QuestionConstants.SUCCESS_MESSAGE, result);
+    }
+
+    @Override
+    public CommentResult<List<QuestionEntity>> searchQuestion(Integer userId, String questionContent) {
+        List<QuestionEntity> result = null;
+        try{
+            result = mapper.searchQuestion(userId, questionContent);
+        } catch (Exception e){
+            e.printStackTrace();
+            return new CommentResult<>(QuestionConstants.ERROR_CODE, QuestionConstants.ERROR_MESSAGE, null);
+        }
+        return new CommentResult<>(QuestionConstants.SUCCESS_CODE, QuestionConstants.SUCCESS_MESSAGE, result);
+    }
+
+    @Override
+    public CommentResult<Course> course(String questionType) {
+        List<Course> list = null;
+        try{
+            list = mapper.course(questionType);
+        } catch (Exception e){
+            e.printStackTrace();
+            return new CommentResult<>(QuestionConstants.ERROR_CODE, QuestionConstants.ERROR_MESSAGE, null);
+        }
+        Course result = null;
+        if(list.size() != 0)
+            result = list.get(0);
+        return new CommentResult<>(QuestionConstants.SUCCESS_CODE, QuestionConstants.SUCCESS_MESSAGE, result);
+    }
+
+    @Override
+    public CommentResult<List<Course>> courseAll() {
+        List<Course> result = null;
+        try{
+            result = mapper.course(null);
+        } catch (Exception e){
+            e.printStackTrace();
+            return new CommentResult<>(QuestionConstants.ERROR_CODE, QuestionConstants.ERROR_MESSAGE, null);
+        }
+        return new CommentResult<>(QuestionConstants.SUCCESS_CODE, QuestionConstants.SUCCESS_MESSAGE, result);
+    }
+
+    @Override
+    public CommentResult<Guide> guide(String questionType) {
+        List<Guide> list = null;
+        try{
+            list = mapper.guide(questionType);
+        } catch (Exception e){
+            e.printStackTrace();
+            return new CommentResult<>(QuestionConstants.ERROR_CODE, QuestionConstants.ERROR_MESSAGE, null);
+        }
+        Guide result = null;
+        if(list.size() != 0)
+            result = list.get(0);
+        return new CommentResult<>(QuestionConstants.SUCCESS_CODE, QuestionConstants.SUCCESS_MESSAGE, result);
+    }
+
+    @Override
+    public CommentResult<List<Guide>> guideAll() {
+        List<Guide> result = null;
+        try{
+            result = mapper.guide(null);
+        } catch (Exception e){
+            e.printStackTrace();
+            return new CommentResult<>(QuestionConstants.ERROR_CODE, QuestionConstants.ERROR_MESSAGE, null);
+        }
+        return new CommentResult<>(QuestionConstants.SUCCESS_CODE, QuestionConstants.SUCCESS_MESSAGE, result);
+    }
+
+    @Override
+    public CommentResult<String> signIn(Integer userId) {
+        LocalDateTime now = LocalDateTime.now();
+
+        return null;
     }
 
     private void addColumn(QuestionEntity e, String[] strings){

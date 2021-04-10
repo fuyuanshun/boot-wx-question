@@ -1,5 +1,7 @@
 package boot.wx.persistence;
 
+import boot.wx.entity.Course;
+import boot.wx.entity.Guide;
 import boot.wx.entity.QuestionEntity;
 import boot.wx.entity.QuestionTypeEntity;
 import org.apache.ibatis.annotations.Mapper;
@@ -32,4 +34,12 @@ public interface QuestionAdminMapper {
     int addQuestionFile(@Param("name") String name, @Param("questionType") String questionType);
 
     int deleteQuestionFile(Integer id);
+
+    int addCourse(@Param("course") Course course);
+
+    int getCountByCourse(Integer question_type);
+
+    int getCountByGuide(Integer questionTypeId);
+
+    int addGuide(@Param("guide") Guide guide);
 }

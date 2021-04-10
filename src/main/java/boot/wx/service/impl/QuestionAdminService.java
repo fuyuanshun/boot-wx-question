@@ -1,10 +1,7 @@
 package boot.wx.service.impl;
 
 import boot.wx.constants.QuestionConstants;
-import boot.wx.entity.CommentResult;
-import boot.wx.entity.QuestionEntity;
-import boot.wx.entity.QuestionTypeEntity;
-import boot.wx.entity.User;
+import boot.wx.entity.*;
 import boot.wx.persistence.QuestionAdminMapper;
 import boot.wx.service.IQuestionAdminService;
 import com.alibaba.fastjson.JSONArray;
@@ -181,6 +178,46 @@ public class QuestionAdminService implements IQuestionAdminService {
         int i = 0;
         try{
             i = mapper.deleteQuestionFile(id);
+        } catch (Exception e){
+            e.printStackTrace();
+            return new CommentResult<>(QuestionConstants.ERROR_CODE, QuestionConstants.ERROR_MESSAGE, 0);
+        }
+        return new CommentResult<>(QuestionConstants.SUCCESS_CODE, QuestionConstants.SUCCESS_MESSAGE, i);
+    }
+
+    @Override
+    public CommentResult<Integer> addCourse(Course course) {
+        if(course.getQuestionTypeId() == null){
+            return new CommentResult<>(QuestionConstants.PARAM_ERROR_CODE, QuestionConstants.PARAM_ERROR_MESSAGE, 0);
+        }
+        //每个课程下只能有一个数据，如果没有才能插入
+        int count = mapper.getCountByCourse(course.getQuestionTypeId());
+        if(count > 0){
+            return new CommentResult<>(10003, "请检查数据是否已经存在！", 0);
+        }
+        int i = 0;
+        try{
+            i = mapper.addCourse(course);
+        } catch (Exception e){
+            e.printStackTrace();
+            return new CommentResult<>(QuestionConstants.ERROR_CODE, QuestionConstants.ERROR_MESSAGE, 0);
+        }
+        return new CommentResult<>(QuestionConstants.SUCCESS_CODE, QuestionConstants.SUCCESS_MESSAGE, i);
+    }
+
+    @Override
+    public CommentResult<Integer> addGuide(Guide guide) {
+        if(guide.getQuestionTypeId() == null){
+            return new CommentResult<>(QuestionConstants.PARAM_ERROR_CODE, QuestionConstants.PARAM_ERROR_MESSAGE, 0);
+        }
+        //每个课程下只能有一个数据，如果没有才能插入
+        int count = mapper.getCountByGuide(guide.getQuestionTypeId());
+        if(count > 0){
+            return new CommentResult<>(10003, "请检查数据是否已经存在！", 0);
+        }
+        int i = 0;
+        try{
+            i = mapper.addGuide(guide);
         } catch (Exception e){
             e.printStackTrace();
             return new CommentResult<>(QuestionConstants.ERROR_CODE, QuestionConstants.ERROR_MESSAGE, 0);

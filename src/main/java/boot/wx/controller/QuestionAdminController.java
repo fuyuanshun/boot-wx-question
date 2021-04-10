@@ -1,8 +1,6 @@
 package boot.wx.controller;
 
-import boot.wx.entity.CommentResult;
-import boot.wx.entity.QuestionEntity;
-import boot.wx.entity.QuestionTypeEntity;
+import boot.wx.entity.*;
 import boot.wx.service.IQuestionAdminService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -135,5 +133,23 @@ public class QuestionAdminController {
     @PostMapping("/admin/question/deleteQuestionFile/{id}")
     public CommentResult<Integer> deleteQuestionFile(@PathVariable("id") Integer id){
         return service.deleteQuestionFile(id);
+    }
+
+    /**
+     * 添加某个课程类型下的考研课程
+     * @return
+     */
+    @PostMapping("/admin/question/course")
+    public CommentResult<Integer> addCourse(@RequestBody Course course){
+        return service.addCourse(course);
+    }
+
+    /**
+     * 添加某个课程类型下的备考指南
+     * @return
+     */
+    @PostMapping("/admin/question/guide")
+    public CommentResult<Integer> addGuide(@RequestBody Guide guide){
+        return service.addGuide(guide);
     }
 }

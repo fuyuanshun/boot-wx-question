@@ -1,9 +1,6 @@
 package boot.wx.service;
 
-import boot.wx.entity.CommentResult;
-import boot.wx.entity.QuestionEntity;
-import boot.wx.entity.QuestionTypeEntity;
-import boot.wx.entity.User;
+import boot.wx.entity.*;
 
 import javax.servlet.http.HttpSession;
 import java.util.List;
@@ -34,4 +31,8 @@ public interface IQuestionAdminService {
     CommentResult<Integer> addQuestionFile(String name, String questionType);
 
     CommentResult<Integer> deleteQuestionFile(Integer id);
+
+    CommentResult<Integer> addCourse(Course course);
+
+    CommentResult<Integer> addGuide(Guide guide);
 }

@@ -1,5 +1,7 @@
 package boot.wx.persistence;
 
+import boot.wx.entity.Course;
+import boot.wx.entity.Guide;
 import boot.wx.entity.QuestionEntity;
 import boot.wx.entity.QuestionFiles;
 import org.apache.ibatis.annotations.Mapper;
@@ -30,4 +32,10 @@ public interface QuestionMapper {
     int removeWrongQuestion(@Param("questionIds") String questionIds, @Param("userId") String userId);
 
     List<QuestionFiles> files(@Param("questionType") String questionType, @Param("userId") String userId);
+
+    List<QuestionEntity> searchQuestion(@Param("userId") Integer userId, @Param("questionContent") String questionContent);
+
+    List<Course> course(String questionType);
+
+    List<Guide> guide(String questionType);
 }

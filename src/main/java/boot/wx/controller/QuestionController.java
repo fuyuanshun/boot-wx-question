@@ -1,8 +1,6 @@
 package boot.wx.controller;
 
-import boot.wx.entity.CommentResult;
-import boot.wx.entity.QuestionEntity;
-import boot.wx.entity.QuestionFiles;
+import boot.wx.entity.*;
 import boot.wx.service.IQuestionService;
 import com.alibaba.fastjson.JSONObject;
 import lombok.extern.slf4j.Slf4j;
@@ -91,8 +89,66 @@ public class QuestionController {
         return service.removeWrongQuestion(questionIds, userId);
     }
 
+    /**
+     * 查询某个课程下的题目分类
+     * @param questionType
+     * @param userId
+     * @return
+     */
     @GetMapping("/question/files/{questionType}/{user_id}")
     public CommentResult<List<QuestionFiles>> files(@PathVariable("questionType") String questionType, @PathVariable("user_id") String userId){
         return service.files(questionType, userId);
+    }
+
+    /**
+     * 搜题
+     * 查询所匹配的所有题目的id、答案、答案解析
+     *
+     */
+    @GetMapping("/question/search/{user_id}/{questionContent}")
+    public CommentResult<List<QuestionEntity>> searchQuestion(@PathVariable("user_id") Integer userId, @PathVariable("questionContent") String questionContent){
+        return service.searchQuestion(userId, questionContent);
+    }
+
+    /**
+     * 查询某个课程下的考研课程
+     */
+    @GetMapping("/question/course/{questionType}")
+    public CommentResult<Course> course(@PathVariable("questionType") String questionType){
+        return service.course(questionType);
+    }
+
+    /**
+     * 查询所有课程下的考研课程
+     */
+    @GetMapping("/question/course")
+    public CommentResult<List<Course>> courseAll(){
+        return service.courseAll();
+    }
+
+    /**
+     * 查询某个课程下的考研指南
+     */
+    @GetMapping("/question/guide/{questionType}")
+    public CommentResult<Guide> guide(@PathVariable("questionType") String questionType){
+        return service.guide(questionType);
+    }
+
+    /**
+     * 查询所有课程下的考研指南
+     */
+    @GetMapping("/question/guide")
+    public CommentResult<List<Guide>> guideAll(){
+        return service.guideAll();
+    }
+
+    /**
+     * 签到打卡 ??
+     * @param userId
+     * @return
+     */
+    @PostMapping("/user/signin/{user_id}")
+    public CommentResult<String> signIn(@PathVariable("user_id") Integer userId){
+        return service.signIn(userId);
     }
 }

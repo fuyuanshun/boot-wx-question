@@ -81,7 +81,6 @@ insert into reply_question_info (user_id, question_id, selected) values
 # drop table reply_question_info
 /**答题记录表 end*/
 
-
 alter table wrong_question_info add create_time datetime;
 
 /**文件夹表 start*/
@@ -95,3 +94,15 @@ create table question_file(
 );
 insert into question_file (name, question_type_id, deleted) values('test1', 1, 0);
 /**文件夹表 end*/
+
+create table course(
+	id int primary key auto_increment,
+	question_type int,
+	c_title varchar(200) default '',
+	c_slogan varchar(200) default '',
+	c_content varchar(500) default '',
+	c_list varchar(999) default '',
+	c_img varchar(999) default '',
+	deleted int default 0,
+	constraint fk_course_question_type foreign key(question_type) references question_type(id)
+)

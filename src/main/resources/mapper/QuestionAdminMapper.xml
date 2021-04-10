@@ -81,4 +81,20 @@
     <update id="deleteQuestionFile" parameterType="Integer">
         update question_file set deleted = 1 where id = #{id}
     </update>
+
+    <select id="getCountByCourse" parameterType="Integer" resultType="Integer">
+        select count(id) from course where question_type = #{question_type}
+    </select>
+
+    <insert id="addCourse" parameterType="boot.wx.entity.Course">
+        insert into course (question_type, c_title, c_slogan, c_content, c_list, c_img, deleted) values (#{course.questionTypeId}, #{course.c_title}, #{course.c_slogan}, #{course.c_content}, #{course.c_list}, #{course.c_img}, 0)
+    </insert>
+
+    <select id="getCountByGuide" parameterType="Integer" resultType="Integer">
+        select count(id) from guide where question_type = #{question_type}
+    </select>
+
+    <insert id="addGuide" parameterType="boot.wx.entity.Guide">
+        insert into guide (question_type, c_title, c_slogan, content, c_img, deleted) values (#{guide.questionTypeId}, #{guide.c_title}, #{guide.c_slogan}, #{guide.content}, #{guide.c_img}, 0)
+    </insert>
 </mapper>

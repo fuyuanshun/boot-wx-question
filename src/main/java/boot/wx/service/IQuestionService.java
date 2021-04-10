@@ -1,8 +1,6 @@
 package boot.wx.service;
 
-import boot.wx.entity.CommentResult;
-import boot.wx.entity.QuestionEntity;
-import boot.wx.entity.QuestionFiles;
+import boot.wx.entity.*;
 import com.alibaba.fastjson.JSONObject;
 
 import java.util.List;
@@ -23,4 +21,16 @@ public interface IQuestionService {
     CommentResult<Integer> removeWrongQuestion(String questionIds, String userId);
 
     CommentResult<List<QuestionFiles>> files(String questionType, String userId);
+
+    CommentResult<String> signIn(Integer userId);
+
+    CommentResult<List<QuestionEntity>> searchQuestion(Integer userId, String questionContent);
+
+    CommentResult<Course> course(String questionType);
+
+    CommentResult<List<Course>> courseAll();
+
+    CommentResult<Guide> guide(String questionType);
+
+    CommentResult<List<Guide>> guideAll();
 }
