@@ -100,7 +100,7 @@
     <select id="files" resultType="boot.wx.entity.QuestionFiles">
         select t1.id, t1.name, t2.name questiontype, t2.id questionTypeId from question_file t1
         left join question_type t2 on t1.question_type_id = t2.id and t2.deleted = 0
-        where t1.deleted = 0
+        where t1.deleted = 0 and t2.name = #{questionType}
     </select>
 
     <select id="searchQuestion" resultType="boot.wx.entity.QuestionEntity">
